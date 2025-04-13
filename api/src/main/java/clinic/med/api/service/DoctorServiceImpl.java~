@@ -1,0 +1,64 @@
+package clinic.med.api.service;
+
+import clinic.med.api.domain.dto.doctorDto.DoctorDtoUpdate;
+import clinic.med.api.domain.model.doctor.Doctor;
+import clinic.med.api.domain.dto.doctorDto.DoctorDto;
+import clinic.med.api.domain.dto.doctorDto.DoctorDtoResponse;
+import clinic.med.api.domain.dto.doctorDto.DoctorListingDto;
+import clinic.med.api.repositories.doctor.DoctorRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+public class DoctorServiceImpl implements DoctorService {
+    private final DoctorRepository doctorRepository;
+
+    public DoctorServiceImpl(DoctorRepository doctorRepository) {
+        this.doctorRepository = doctorRepository;
+    }
+
+
+    @Override
+    @Transactional
+    public DoctorDtoResponse create(DoctorDto doctorDto) {
+        Doctor doctor= new Doctor(doctorDto);
+        doctorRepository.save(doctor);
+        return new DoctorDtoResponse(doctor);
+
+
+    }
+
+    @Override
+    public Page<DoctorListingDto> findAllByActiveTrue(@PageableDefault(size = 10,sort = "name" ) Pageable pageable) {
+        return doctorRepository.findAllByActiveTrue(pageable).map(DoctorListingDto::new);
+    }
+
+    @Override
+    @Transactional
+    public DoctorDtoResponse updateDoctor( DoctorDtoUpdate doctorDto) {
+        var doctor = doctorRepository.findById(doctorDto.id()).orElseThrow();
+        doctor.updateDoctor(doctorDto);
+        return new DoctorDtoResponse(doctor);
+
+    }
+
+    @Override
+    @Transactional
+    public void deleteDoctor(Long id) {
+        var doctor = doctorRepository.findById(id).orElseThrow();
+        doctor.deleteDoctors();
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        var doctor = doctorRepository.findById(id).orElseThrow();
+        doctor.delete();
+    }
+}

@@ -1,0 +1,21 @@
+package clinic.med.api.service;
+
+import clinic.med.api.domain.dto.doctorDto.DoctorDto;
+import clinic.med.api.domain.dto.doctorDto.DoctorDtoResponse;
+import clinic.med.api.domain.dto.doctorDto.DoctorDtoUpdate;
+import clinic.med.api.domain.dto.doctorDto.DoctorListingDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
+public interface DoctorService {
+
+    DoctorDtoResponse create(DoctorDto doctorDto);
+
+    DoctorDtoResponse updateDoctor( DoctorDtoUpdate doctorDto);
+
+    void delete(Long id);
+
+    Page<DoctorListingDto> findAllByActiveTrue(Pageable pageable);
+}
