@@ -1,4 +1,4 @@
-package clinic.med.api.service;
+package clinic.med.api.service.doctor;
 
 import clinic.med.api.domain.dto.doctorDto.DoctorDtoUpdate;
 import clinic.med.api.domain.model.doctor.Doctor;
@@ -12,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -37,6 +35,12 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public Page<DoctorListingDto> findAllByActiveTrue(@PageableDefault(size = 10,sort = "name" ) Pageable pageable) {
         return doctorRepository.findAllByActiveTrue(pageable).map(DoctorListingDto::new);
+    }
+
+    @Override
+    public DoctorDtoResponse findById(Long id) {
+        return doctorRepository.findById(id).map(DoctorDtoResponse::new)
+                .orElseThrow();
     }
 
     @Override

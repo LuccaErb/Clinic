@@ -11,7 +11,8 @@ public record DoctorDtoResponse(Long id,
                                 String phone,
                                 String crm,
                                 Specialty specialty,
-                                Address address) {
+                                Address address,
+                                Boolean active) {
     public DoctorDtoResponse(Doctor doctor) {
         this(doctor.getId(),
             doctor.getName(),
@@ -19,7 +20,8 @@ public record DoctorDtoResponse(Long id,
             doctor.getPhone(),
             doctor.getCrm(),
             doctor.getSpecialty(),
-            doctor.getAddress());
+            doctor.getAddress(),
+            doctor.getActive());
     }
    
 }
